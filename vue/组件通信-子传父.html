@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>组件通信</title>
+</head>
+<body>
+  <div id="app">
+    <!-- 注意:temp里面的ctest变量不支持驼峰 -->
+    <temp :counter="rcounter" @varietycounter="varietycounterevent"></temp>
+    <h2>现在的值为:{{rcounter}}</h2>
+  </div>
+  <template id="temp">
+    <div>
+      <button @click="decrease">-</button>
+      {{counter}}
+      <button @click="increase">+</button>
+    </div>
+  </template>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+    const temp = {
+      template:"#temp",
+      data() {
+        console.log("被调用");
+        return {
+          currentcounter:this.counter
+        }
+      },
+      props:['counter'],
+      methods:{
+        decrease() {
+          this.currentcounter--;
+          this.$emit("varietycounter",this.currentcounter);
+        },
+        increase() {
+          this.currentcounter++;
+          this.$emit("varietycounter",this.currentcounter);
+        }
+      }
+    };
+    const app = new Vue({
+      el:"#app",
+      data:{
+        rcounter:5
+      },
+      components:{
+        temp
+      },
+      methods:{
+        varietycounterevent(counter) {
+          this.rcounter = counter;
+        }
+      }
+    });
+  </script>
+</body>
+</html>

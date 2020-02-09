@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>组件通信</title>
+</head>
+<body>
+  <div id="app">
+    <!-- 注意:temp里面的ctest变量不支持驼峰 -->
+    <temp :ctest="test" ></temp>
+  </div>
+  <template id="temp">
+    <div>
+      <h2>模板测试</h2>
+      <p>{{ctest}}</p>
+      <p>{{cneglect}}</p>
+    </div>
+  </template>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+    const temp = {
+      template:"#temp",
+      // props:['ctest']//方式一
+      //方式二:以对象的方式
+      props: {
+        ctest:String,
+        cneglect:{
+          type:String,
+          default:"默认值",//默认值
+          required:true //添加此选项说明cneglect必须明确传参
+        }
+        //数组的默认写法:举例
+        /**
+        cneglect: {
+          type: Array,
+          default() {
+            return []
+          }
+        }
+        */
+      }
+    };
+    const app = new Vue({
+      el:"#app",
+      data:{
+        test:"aaaaa"
+      },
+      components:{
+        temp
+      }
+    });
+  </script>
+</body>
+</html>
